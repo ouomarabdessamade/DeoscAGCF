@@ -7,12 +7,12 @@ def parse_args():
     parser = argparse.ArgumentParser(description="Run NGCF.")
     parser.add_argument('--weights_path', nargs='?', default='',
                         help='Store model path.')
-    parser.add_argument('--data_path', nargs='?', default='./Data/',
+    parser.add_argument('--data_path', nargs='?', default='../gowalla/Data/',
                         help='Input data path.')
     parser.add_argument('--proj_path', nargs='?', default='',
                         help='Project path.')
 
-    parser.add_argument('--dataset', nargs='?', default='ml100k',
+    parser.add_argument('--dataset', nargs='?', default='gowalla',
                         help='Choose a dataset from {ml100k, ratings_ml-1m, gowalla}')
     parser.add_argument('--pretrain', type=int, default=0,
                         help='0: No pretrain, -1: Pretrain with the learned embeddings, 1:Pretrain with stored models.')
