@@ -129,7 +129,7 @@ class DGCF(object):
     def _init_weights(self):
         all_weights = dict()
 
-        initializer = initializer = tf.keras.initializers.glorot_uniform(
+        initializer = initializer = tf.keras.initializers.glorot_uniform()
 
         if self.pretrain_data is None:
             all_weights['user_embedding'] = tf.Variable(initializer([self.n_users, self.emb_dim]), name='user_embedding')
