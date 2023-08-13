@@ -510,9 +510,9 @@ if __name__ == '__main__':
                                           model.mess_dropout: eval(args.mess_dropout),
                                           model.neg_items: neg_items})
             loss += batch_loss/n_batch
-            mf_loss += batch_mf_loss/n_batch
-            emb_loss += batch_emb_loss/n_batch
-            reg_loss += batch_reg_loss/n_batch
+            #mf_loss += batch_mf_loss/n_batch
+            #emb_loss += batch_emb_loss/n_batch
+            #reg_loss += batch_reg_loss/n_batch
 
         if np.isnan(loss) == True:
             print('ERROR: loss is nan.')
@@ -521,14 +521,14 @@ if __name__ == '__main__':
         # print the validation metrics each 10 epochs; pos:neg = 1:10.
         test_epoch = args.test_epoch
         loss_loger.append(loss)
-        if (epoch < test_epoch) or (epoch + 1) % args.test_interval != 0:
+        if epoch  % 20 != 0:
             if args.verbose > 0 and epoch % args.verbose == 0:
-                perf_str = 'Epoch %d [%.1fs]: train==[%.5f=%.5f + %.5f]' % (
-                    epoch, time() - t1, loss, mf_loss, emb_loss)
+                perf_str = 'Epoch %d [%.1fs]: train==[%.5f]' % (
+                    epoch, time() - t1, loss)
                 print(perf_str)
             continue
-        perf_str = 'Epoch %d [%.1fs]: train==[%.5f=%.5f + %.5f]' % (
-                    epoch, time() - t1, loss, mf_loss, emb_loss)
+        perf_str = 'Epoch %d [%.1fs]: train==[%.5f]' % (
+                    epoch, time() - t1, loss)
         print(perf_str)
         t2 = time()
         time_loger.append(time() - t1)
