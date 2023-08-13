@@ -68,7 +68,7 @@ def parse_args():
     parser.add_argument('--mess_dropout', nargs='?', default='[0.1]',
                         help='Keep probability w.r.t. message dropout (i.e., 1-dropout_ratio) for each deep layer. 1: no dropout.')
 
-    parser.add_argument('--Ks', nargs='?', default='[20, 40, 60, 80, 100]',
+    parser.add_argument('--Ks', nargs='?', default='[10, 20, 30, 40, 50]',
                         help='Output sizes of every layer')
 
     parser.add_argument('--save_flag', type=int, default=1,
