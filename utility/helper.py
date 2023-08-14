@@ -27,7 +27,7 @@ def merge_two_dicts(x, y):
     z.update(y)    # modifies z with y's keys and values & returns None
     return z
 
-def early_stopping(log_value, best_value, stopping_step, expected_order='acc', flag_step=10):
+def early_stopping(log_value, best_value, stopping_step, expected_order='acc', flag_step=100):
     # early stopping strategy:
     assert expected_order in ['acc', 'dec']
 
