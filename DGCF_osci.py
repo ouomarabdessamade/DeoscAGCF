@@ -554,8 +554,13 @@ if __name__ == '__main__':
         # early stopping when cur_best_pre_0 is decreasing for ten successive steps.
         if should_stop == True:
             print('---------find the best validation------------')
-            # print("---------start testing--------------")
-            break
+            print("Test")
+            users_to_test = list(set(data_generator.train_items.keys()).intersection(set(data_generator.test_set.keys())))
+            ret = test(sess, model, users_to_test, drop_flag=True)
+            final_perf = "recall=[%s], ndcg=[%s]"% \
+                 ('\t'.join(['%.5f' % r for r in ret['recall']]),
+                  '\t'.join(['%.5f' % r for r in ret['ndcg']]))
+            print(final_perf)
 
         # *********************************************************
         # save the user & item embeddings for pretraining.
