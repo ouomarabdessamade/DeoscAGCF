@@ -1,8 +1,3 @@
-'''
-Deoscillated Graph Collaborative Filtering, 
-@Author:Zhiwei Liu (jim96liu@gmail.com)
-@Github: https://github.com/JimLiu96/DeosciRec
-'''
 import utility.metrics as metrics
 from utility.parser import parse_args
 from utility.load_data import *
@@ -72,13 +67,10 @@ def get_performance(user_pos_test, r, auc, Ks):
     precision, recall, ndcg, hit_ratio = [], [], [], []
 
     for K in Ks:
-        precision.append(metrics.precision_at_k(r, K))
         recall.append(metrics.recall_at_k(r, K, len(user_pos_test)))
         ndcg.append(metrics.ndcg_at_k(r, K, len(user_pos_test)))
-        hit_ratio.append(metrics.hit_at_k(r, K))
 
-    return {'recall': np.array(recall), 'precision': np.array(precision),
-            'ndcg': np.array(ndcg), 'hit_ratio': np.array(hit_ratio), 'auc': auc}
+    return {'recall': np.array(recall),'ndcg': np.array(ndcg), 'auc': auc}
 
 
 def test_one_user(x):
@@ -131,8 +123,7 @@ def valid_one_user(x):
 
 
 def test(sess, model, users_to_test, drop_flag=False, batch_test_flag=False):
-    result = {'precision': np.zeros(len(Ks)), 'recall': np.zeros(len(Ks)), 'ndcg': np.zeros(len(Ks)),
-              'hit_ratio': np.zeros(len(Ks)), 'auc': 0.}
+    result = {'recall': np.zeros(len(Ks)), 'ndcg': np.zeros(len(Ks)), 'auc': 0.}
 
     pool = multiprocessing.Pool(cores)
 
@@ -193,10 +184,8 @@ def test(sess, model, users_to_test, drop_flag=False, batch_test_flag=False):
         count += len(batch_result)
 
         for re in batch_result:
-            result['precision'] += re['precision']/n_test_users
             result['recall'] += re['recall']/n_test_users
             result['ndcg'] += re['ndcg']/n_test_users
-            result['hit_ratio'] += re['hit_ratio']/n_test_users
             result['auc'] += re['auc']/n_test_users
 
 
@@ -205,8 +194,7 @@ def test(sess, model, users_to_test, drop_flag=False, batch_test_flag=False):
     return result
 
 def validate(sess, model, users_to_valid, drop_flag=False, batch_test_flag=False):
-    result = {'precision': np.zeros(len(Ks)), 'recall': np.zeros(len(Ks)), 'ndcg': np.zeros(len(Ks)),
-              'hit_ratio': np.zeros(len(Ks)), 'auc': 0.}
+    result = {'recall': np.zeros(len(Ks)), 'ndcg': np.zeros(len(Ks)),'auc': 0.}
 
     pool = multiprocessing.Pool(cores)
 
@@ -267,10 +255,8 @@ def validate(sess, model, users_to_valid, drop_flag=False, batch_test_flag=False
         count += len(batch_result)
 
         for re in batch_result:
-            result['precision'] += re['precision']/n_valid_users
             result['recall'] += re['recall']/n_valid_users
             result['ndcg'] += re['ndcg']/n_valid_users
-            result['hit_ratio'] += re['hit_ratio']/n_valid_users
             result['auc'] += re['auc']/n_valid_users
 
 
