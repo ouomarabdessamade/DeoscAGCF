@@ -158,7 +158,7 @@ if __name__ == '__main__':
 
         for idx in range(n_batch):
             users, pos_items, neg_items = data_generator.sample()
-            _, batch_loss, batch_mf_loss, batch_emb_loss, batch_reg_loss = sess.run([model.opt, model.loss],
+            _, batch_loss = sess.run([model.opt, model.loss],
                                feed_dict={model.users: users, model.pos_items: pos_items,
                                           model.node_dropout: eval(args.node_dropout),
                                           model.mess_dropout: eval(args.mess_dropout),
