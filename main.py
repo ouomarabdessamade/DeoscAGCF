@@ -2,7 +2,7 @@ import tensorflow.compat.v1 as tf
 tf.disable_v2_behavior()
 import os
 import sys
-from DAGCF import DGCF, load_pretrained_data
+from DGCF_osci import DGCF, load_pretrained_data
 from utility.helper import *
 from utility.batch_test import *
 os.environ['TF_CPP_MIN_LOG_LEVEL']='2'
