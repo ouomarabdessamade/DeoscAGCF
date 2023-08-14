@@ -518,7 +518,7 @@ if __name__ == '__main__':
         # print the validation metrics each 10 epochs; pos:neg = 1:10.
         test_epoch = args.test_epoch
         loss_loger.append(loss)
-        if epoch  % 10 != 0:
+        if epoch  % 20 != 0:
             if args.verbose > 0 and epoch % args.verbose == 0:
                 perf_str = 'Epoch %d [%.1fs]: train==[%.5f]' % (
                     epoch, time() - t1, loss)
@@ -540,13 +540,6 @@ if __name__ == '__main__':
         ndcg_loger.append(ret['ndcg'])
        
 
-        if args.verbose > 0:
-            perf_str = "recall=[%s], ndcg=[%s]"% \
-                 ('\t'.join(['%.5f' % r for r in ret['recall']]),
-                  '\t'.join(['%.5f' % r for r in ret['ndcg']]))
-            print(perf_str)
-            
-
         cur_best_pre_0, stopping_step, should_stop = early_stopping(ret['recall'][0], cur_best_pre_0,
                                                                     stopping_step, expected_order='acc', flag_step=args.stop_step)
 
@@ -554,13 +547,7 @@ if __name__ == '__main__':
         # early stopping when cur_best_pre_0 is decreasing for ten successive steps.
         if should_stop == True:
             print('---------find the best validation------------')
-            print("Test")
-            users_to_test = list(set(data_generator.train_items.keys()).intersection(set(data_generator.test_set.keys())))
-            ret = test(sess, model, users_to_test, drop_flag=True)
-            final_perf = "recall=[%s], ndcg=[%s]"% \
-                 ('\t'.join(['%.5f' % r for r in ret['recall']]),
-                  '\t'.join(['%.5f' % r for r in ret['ndcg']]))
-            print(final_perf)
+            #print("Test")
 
         # *********************************************************
         # save the user & item embeddings for pretraining.
@@ -585,20 +572,20 @@ if __name__ == '__main__':
             np.savez(embed_file_name, user_embed=u_embed, item_embed=i_embed)
             print('save the embeddings in path:',embed_file_name)
             print(perf_str)
-    # begin to test
-    print('------------start testing!------------')
-    if args.save_flag == 0:
-        weights_save_path = '%sweights/%s/%s/%s/l%s_r%s_d%s_low%s_high%s' % (args.weights_path, args.dataset, model.model_type, layer,
-                                                            str(args.lr), '-'.join([str(r) for r in eval(args.regs)]), str(eval(args.node_dropout)[0]),
-                                                            str(args.low), str(args.high))
-    ckpt = tf.train.get_checkpoint_state(os.path.dirname(weights_save_path + '/checkpoint'))
-    saver.restore(sess, ckpt.model_checkpoint_path)
-    users_to_test = list(set(data_generator.train_items.keys()).intersection(set(data_generator.test_set.keys())))
-    ret = test(sess, model, users_to_test, drop_flag=True)
-    final_perf = "recall=[%s], ndcg=[%s]"% \
-         ('\t'.join(['%.5f' % r for r in ret['recall']]),
-          '\t'.join(['%.5f' % r for r in ret['ndcg']]))
-    print(final_perf)
+            # begin to test
+            print('------------start testing!------------')
+            if args.save_flag == 0:
+                weights_save_path = '%sweights/%s/%s/%s/l%s_r%s_d%s_low%s_high%s' % (args.weights_path, args.dataset, model.model_type, layer,
+                                                                    str(args.lr), '-'.join([str(r) for r in eval(args.regs)]), str(eval(args.node_dropout)[0]),
+                                                                    str(args.low), str(args.high))
+            ckpt = tf.train.get_checkpoint_state(os.path.dirname(weights_save_path + '/checkpoint'))
+            saver.restore(sess, ckpt.model_checkpoint_path)
+            users_to_test = list(set(data_generator.train_items.keys()).intersection(set(data_generator.test_set.keys())))
+            ret = test(sess, model, users_to_test, drop_flag=True)
+            final_perf = "recall=[%s], ndcg=[%s]"% \
+                 ('\t'.join(['%.5f' % r for r in ret['recall']]),
+                  '\t'.join(['%.5f' % r for r in ret['ndcg']]))
+            print(final_perf)
 
     save_path = '%soutput/%s/%s.result' % (args.proj_path, args.dataset, model.model_type)
     ensureDir(save_path)
