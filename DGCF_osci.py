@@ -590,7 +590,7 @@ if __name__ == '__main__':
     saver.restore(sess, ckpt.model_checkpoint_path)
     users_to_test = list(set(data_generator.train_items.keys()).intersection(set(data_generator.test_set.keys())))
     ret = test(sess, model, users_to_test, drop_flag=True)
-    final_perf = "recall=[%s], precision=[%s], hit=[%s], ndcg=[%s]"% \
+    final_perf = "recall=[%s], ndcg=[%s]"% \
          ('\t'.join(['%.5f' % r for r in ret['recall']]),
           '\t'.join(['%.5f' % r for r in ret['ndcg']]))
     print(final_perf)
